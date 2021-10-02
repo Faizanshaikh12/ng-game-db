@@ -4,36 +4,42 @@
     <mat-select
       panelClass="sort-select"
       [(ngModel)]="sort"
+      (selectionChange)="searchGames(sort)"
     >
-    <mat-option value="name">Name</mat-option>
-    <mat-option value="released">Released</mat-option>
-    <mat-option value="added">Added</mat-option>
-    <mat-option value="created">Created</mat-option>
-    <mat-option value="updated">Updated</mat-option>
-    <mat-option value="rating">Rating</mat-option>
-    <mat-option value="metacritic">Metacritic</mat-option>
+      <mat-option value="name">Name</mat-option>
+      <mat-option value="released">Released</mat-option>
+      <mat-option value="added">Added</mat-option>
+      <mat-option value="created">Created</mat-option>
+      <mat-option value="updated">Updated</mat-option>
+      <mat-option value="rating">Rating</mat-option>
+      <mat-option value="metacritic">Metacritic</mat-option>
     </mat-select>
   </mat-form-field>
 </div>
 
 <div class="games">
-  <div class="game">
-    <div class="game-thumb-container">
-      <img
-        src="https://images.unsplash.com/photo-1553481187-be93c21490a9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z2FtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"
-        alt="thumb"
-        class="game-thumb"
-      />
+  <ng-container *ngFor="let game of games">
+    <div class="game" (click)="openGameDetails(game.id)">
+      <div class="game-thumb-container">
+        <img
+          *ngIf="game.background_image"
+          src="{{game.background_image}}"
+          alt="thumb"
+          class="game-thumb"
+        />
+        <p *ngIf="!game.background_image">No Image</p>
+      </div>
       <div class="game-desc">
-        <p class="game-name">Name</p>
+        <p class="game-name">{{game.name}}</p>
         <div class="game-platforms">
           <img
+            *ngFor="let gamePlatform of game.parent_platforms"
             class="game-platform"
-            src="https://images.unsplash.com/photo-1553481187-be93c21490a9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z2FtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"
-            alt="slug"
-            />
+            src="assets/images/platforms/{{ gamePlatform.platform.slug }}.svg"
+            alt="{{ gamePlatform.platform.slug }}"
+          />
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
